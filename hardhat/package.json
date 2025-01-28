@@ -1,7 +1,19 @@
 {
+  "name": "erc1155",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "prettier": "prettier --write --plugin=prettier-plugin-solidity 'contracts/*.sol'",
+    "solhint": "solhint 'contracts/*.sol'",
+    "slither": "slither ./contracts   --exclude naming-convention,external-function,low-level-calls   --solc-remaps '@openzeppelin=node_modules/@openzeppelin @chainlink=node_modules/@chainlink'",
+    "coverage": "npx hardhat coverage"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.18"
+    "hardhat": "^2.22.18",
+    "prettier": "^3.4.2",
+    "prettier-plugin-solidity": "^1.4.2",
+    "solhint": "^5.0.5"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0"

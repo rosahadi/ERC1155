@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import "./ITokenCollection.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ITokenCollection} from "./ITokenCollection.sol";
 
 contract TokenForge is Ownable {
     ITokenCollection public tokenContract;
+
+    error InvalidForgeToken();
+    error TokenContractNotSet();
 
     constructor() Ownable(msg.sender) {}
 
@@ -14,7 +17,8 @@ contract TokenForge is Ownable {
     }
 
     function forge(uint256 targetTokenId) public {
-        require(targetTokenId >= 3 && targetTokenId <= 6, "Invalid token to forge");
+        if (address(tokenContract) == address(0)) revert TokenContractNotSet();
+        if (targetTokenId < 3 || targetTokenId > 6) revert InvalidForgeToken();
 
         if (targetTokenId == 3) {
             tokenContract.burn(msg.sender, 0, 1);

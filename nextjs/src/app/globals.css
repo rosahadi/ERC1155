@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 :root {
   --background: #081425; /* Midnight Blue */
   --background-light: #0a1931; /* Deep Navy */
@@ -16,6 +12,8 @@ body {
   --text-secondary: #00ffff; /* Neon Cyan */
   --text-accent: #ff007f; /* Hot Pink */
   --text-subtle: #b0c4de; /* Light Steel Blue */
+
+  --scrollbar: #b0c4de3f; /* Light Steel Blue */
 
   --card: #0f1b3d; /* Dark Sapphire */
   --card-highlight: #122a52; /* Deep Blue Glow */
@@ -35,4 +33,80 @@ body {
   --gradient-end: #00ffff; /* Electric Cyan */
   --gradient-deep: #0a1931; /* Dark Navy */
   --gradient-intense: #154273; /* Bright Blue */
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  body {
+    line-height: 1.6;
+    outline: none;
+    font-size: 1.8rem;
+    width: 100vw;
+    margin-inline: auto;
+    background-color: var(--bg-main);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+  }
+
+  input {
+    background: none;
+    font: inherit;
+    color: inherit;
+  }
+
+  button:focus,
+  input:focus {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  html:hover ::-webkit-scrollbar,
+  html:active ::-webkit-scrollbar {
+    display: block;
+    width: 8px !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 8px !important;
+    background: var(--scrollbar);
+    border-radius: 4px;
+  }
+
+  body[data-scroll-locked="1"] {
+    overflow-y: hidden;
+  }
+
+  body[data-scroll-locked="1"]::-webkit-scrollbar {
+    width: 0px;
+    z-index: 0;
+  }
 }

@@ -98,6 +98,18 @@ contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
         _mint(msg.sender, tokenToReceive, amount, "");
     }
 
+    function burn(address account, uint256 id, uint256 value) public override {
+        if (msg.sender != account && !isApprovedForAll(account, msg.sender)) {
+            revert UnauthorizedForge();
+        }
+        if (balanceOf(account, id) < value) {
+            revert InsufficientBalance();
+        }
+
+        totalSupply[id] -= value;
+        _burn(account, id, value);
+    }
+
     function setForgeContract(address _forgeContract) external onlyOwner {
         if (_forgeContract == address(0)) revert InvalidAddress();
         forgeContract = _forgeContract;

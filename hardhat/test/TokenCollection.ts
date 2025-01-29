@@ -24,7 +24,9 @@ describe("TokenCollection", function () {
 
   describe("Deployment", () => {
     it("should set the owner correctly", async () => {
-      expect(await tokenCollection.owner()).to.equal(owner);
+      expect(await tokenCollection.owner()).to.equal(
+        owner.address
+      );
     });
   });
 
@@ -220,6 +222,12 @@ describe("TokenCollection", function () {
     it("should forge token 3 by burning tokens 0 and 1", async () => {
       await tokenForge.connect(user).forge(3);
 
+      expect(
+        await tokenCollection.balanceOf(user.address, 0)
+      ).to.equal(0);
+      expect(
+        await tokenCollection.balanceOf(user.address, 1)
+      ).to.equal(0);
       // Check forged token
       expect(
         await tokenCollection.balanceOf(user.address, 3)

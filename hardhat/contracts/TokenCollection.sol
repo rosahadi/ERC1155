@@ -3,11 +3,18 @@ pragma solidity ^0.8.20;
 
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {ERC1155Burnable} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
+import {ERC1155Supply} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
+contract TokenCollection is
+    ERC1155,
+    ERC1155Supply,
+    Ownable,
+    ERC1155Burnable,
+    ReentrancyGuard
+{
     using Strings for uint256;
 
     string public name;
@@ -16,9 +23,7 @@ contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
 
     uint256 public constant COOLDOWN = 1 minutes;
     mapping(address => mapping(uint256 => uint256)) public lastMintTime;
-    mapping(uint256 => uint256) public totalSupply;
 
-    // Custom errors
     error NameNotSet();
     error SymbolNotSet();
     error InvalidTokenId();
@@ -37,28 +42,22 @@ contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
     {}
 
     function setCollectionInfo(
-        string memory _name,
-        string memory _symbol
+        string calldata _name,
+        string calldata _symbol
     ) public onlyOwner {
         name = _name;
         symbol = _symbol;
     }
 
-    function setURI(string memory newuri) public onlyOwner {
+    function setURI(string calldata newuri) public onlyOwner {
         _setURI(newuri);
     }
 
     function uri(
         uint256 tokenId
     ) public view virtual override returns (string memory) {
-        if (totalSupply[tokenId] == 0) revert TokenNotMinted();
-
-        return
-            string.concat(
-                super.uri(tokenId),
-                Strings.toString(tokenId),
-                ".json"
-            );
+        if (totalSupply(tokenId) == 0) revert TokenNotMinted();
+        return string.concat(super.uri(tokenId), tokenId.toString(), ".json");
     }
 
     function mint(uint256 tokenId) public {
@@ -70,14 +69,11 @@ contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
         }
 
         lastMintTime[msg.sender][tokenId] = block.timestamp;
-        totalSupply[tokenId] += 1;
         _mint(msg.sender, tokenId, 1, "");
     }
 
     function forgeMint(uint256 tokenId, uint256 amount) external {
         if (msg.sender != forgeContract) revert UnauthorizedForge();
-
-        totalSupply[tokenId] += amount;
         _mint(tx.origin, tokenId, amount, "");
     }
 
@@ -91,27 +87,22 @@ contract TokenCollection is ERC1155, Ownable, ERC1155Burnable, ReentrancyGuard {
             revert InsufficientBalance();
         }
 
-        totalSupply[tokenToGive] -= amount;
-        totalSupply[tokenToReceive] += amount;
-
         _burn(msg.sender, tokenToGive, amount);
         _mint(msg.sender, tokenToReceive, amount, "");
-    }
-
-    function burn(address account, uint256 id, uint256 value) public override {
-        if (msg.sender != account && !isApprovedForAll(account, msg.sender)) {
-            revert UnauthorizedForge();
-        }
-        if (balanceOf(account, id) < value) {
-            revert InsufficientBalance();
-        }
-
-        totalSupply[id] -= value;
-        _burn(account, id, value);
     }
 
     function setForgeContract(address _forgeContract) external onlyOwner {
         if (_forgeContract == address(0)) revert InvalidAddress();
         forgeContract = _forgeContract;
+    }
+
+    // Required override by Solidity to handle ERC1155Supply
+    function _update(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values
+    ) internal virtual override(ERC1155, ERC1155Supply) {
+        super._update(from, to, ids, values);
     }
 }

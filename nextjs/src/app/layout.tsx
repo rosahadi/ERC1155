@@ -1,11 +1,15 @@
+import { headers } from "next/headers";
+import ContextProvider from "@/context";
 import "./globals.css";
-import { FloatingNav } from "@/components/ui/floating-navbar";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersData = await headers();
+  const cookies = headersData.get("cookie");
+
   return (
     <html lang="en">
       <body
@@ -13,8 +17,9 @@ export default function RootLayout({
           "max-w-[120rem] w-[90%] mx-auto bg-background h-[100rem]"
         }
       >
-        <FloatingNav />
-        {children}
+        <ContextProvider cookies={cookies}>
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );

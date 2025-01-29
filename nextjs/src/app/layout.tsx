@@ -1,5 +1,5 @@
-import Nav from "@/components/nav/Nav";
 import "./globals.css";
+import { FloatingNav } from "@/components/ui/floating-navbar";
 
 export default function RootLayout({
   children,
@@ -8,8 +8,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={"bg-background"}>
-        <Nav />
+      <body
+        className={
+          "max-w-[120rem] w-[90%] mx-auto bg-background h-[100rem]"
+        }
+      >
+        <FloatingNav />
         {children}
       </body>
     </html>

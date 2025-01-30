@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import {
   motion,
@@ -8,11 +7,13 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
-import ConnectWalletBtn from "./button";
+import ConnectBtn from "./ConnectBtn";
 
 export const FloatingNav = ({
+  onClick,
   className,
 }: {
+  onClick: () => void;
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
@@ -33,12 +34,10 @@ export const FloatingNav = ({
         if (!hasScrolled && current > 0) {
           setHasScrolled(true);
         }
-
         // Only check direction if we've scrolled at least once
         if (hasScrolled) {
           const direction =
             current! - scrollYProgress.getPrevious()!;
-
           if (scrollYProgress.get() < 0.05) {
             setVisible(true);
           } else {
@@ -68,7 +67,7 @@ export const FloatingNav = ({
           duration: 0.2,
         }}
         className={cn(
-          "flex  fixed top-0 inset-x-0 max-w-[120rem] w-[90%] mx-auto h-[8.62rem] max-[730px]:h-[8rem] max-[600px]:h-[7.5rem] bg-[#081425] z-[5000] items-center justify-between px-8",
+          "flex fixed top-0 inset-x-0 max-w-[120rem] w-[90%] mx-auto h-[8.62rem] max-[730px]:h-[8rem] max-[600px]:h-[7.5rem] bg-[#081425] z-[5000] items-center justify-between px-8",
           className
         )}
       >
@@ -76,11 +75,9 @@ export const FloatingNav = ({
           Cool Cat NFTs
         </div>
 
-        <ConnectWalletBtn
-          onClick={() => console.log("cliked")}
-        >
+        <ConnectBtn onClick={onClick}>
           connect wallet
-        </ConnectWalletBtn>
+        </ConnectBtn>
       </motion.div>
     </AnimatePresence>
   );

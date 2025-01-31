@@ -72,8 +72,8 @@ export const FloatingNav = ({
         )}
       >
         <div className="max-w-[120rem] w-[90%] mx-auto flex items-center justify-between">
-          <div className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#ffd700] to-[#00ffff] font-bold text-4xl">
-            Cool Cat NFTs
+          <div className="uppercase text-transparent bg-clip-text bg-gradient-to-r from-text-accent via-text-primary to-text-secondary  font-bold text-4xl">
+            CoolCats
           </div>
 
           <ConnectBtn onClick={onClick}>

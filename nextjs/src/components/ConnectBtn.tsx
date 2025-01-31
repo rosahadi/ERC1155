@@ -33,7 +33,7 @@ const ConnectBtn: React.FC<ConnectBtnProps> = ({
         disabled={disabled}
         className={`
           relative group px-8 py-4 
-          bg-gradient-to-r from-[#ff007f] to-[#00ffff] 
+          bg-gradient-to-r from-button to-button-secondary
           rounded-xl overflow-hidden 
           transition-all duration-300 
           disabled:opacity-50 disabled:cursor-not-allowed 
@@ -41,11 +41,11 @@ const ConnectBtn: React.FC<ConnectBtnProps> = ({
         `}
       >
         <div className="absolute inset-0 opacity-50 group-hover:opacity-70 transition-opacity">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#ff007f] to-[#00ffff] blur-xl" />
+          <div className="absolute inset-0 bg-gradient-to-r from-button to-button-secondary blur-xl" />
         </div>
         <div className="absolute inset-[1px] bg-[#081425] rounded-xl" />
         <div className="relative flex items-center justify-center">
-          <div className="relative font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#ffd700] to-[#00ffff] text-3xl">
+          <div className="relative font-bold text-transparent bg-clip-text bg-gradient-to-r from-button via-text-primary to-button-secondary text-3xl">
             {children}
           </div>
         </div>
@@ -65,7 +65,7 @@ const ConnectBtn: React.FC<ConnectBtnProps> = ({
       `}
     >
       <div className="flex space-x-4 items-center">
-        <span className="text-3xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] to-[#00ffff]">
+        <span className="text-3xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-text-accent to-text-secondary">
           {parseFloat(formattedBalance).toFixed(4)}{" "}
           {balance?.symbol}
         </span>

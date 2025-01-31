@@ -53,13 +53,25 @@
     overflow-x: hidden;
   }
 
+  @media (max-width: 730px) {
+    html {
+      font-size: 58.125%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    html {
+      font-size: 56%;
+    }
+  }
+
   body {
+    font-family: "Rajdhani", sans-serif;
     line-height: 1.6;
     outline: none;
     font-size: 1.8rem;
     width: 100vw;
     margin-inline: auto;
-    background-color: var(--bg-main);
   }
 
   img {
@@ -86,27 +98,30 @@
   }
 
   ::-webkit-scrollbar {
-    display: none;
-  }
-
-  html:hover ::-webkit-scrollbar,
-  html:active ::-webkit-scrollbar {
-    display: block;
-    width: 8px !important;
+    width: 0.6rem;
+    background: transparent;
+    visibility: hidden;
   }
 
   ::-webkit-scrollbar-thumb {
-    width: 8px !important;
     background: var(--scrollbar);
     border-radius: 4px;
+    visibility: hidden;
   }
 
-  body[data-scroll-locked="1"] {
-    overflow-y: hidden;
+  html:hover ::-webkit-scrollbar-thumb,
+  html:active ::-webkit-scrollbar-thumb,
+  html:focus-within ::-webkit-scrollbar-thumb {
+    visibility: visible;
   }
 
-  body[data-scroll-locked="1"]::-webkit-scrollbar {
-    width: 0px;
-    z-index: 0;
+  ::-webkit-scrollbar-thumb {
+    transition: visibility 0.3s ease-in-out;
+  }
+}
+
+@layer components {
+  .action-button {
+    @apply py-2 w-full text-white rounded-lg text-[1.6rem] font-medium hover:scale-105 transition-all duration-300 flex items-center justify-center;
   }
 }

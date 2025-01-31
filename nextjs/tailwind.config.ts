@@ -71,6 +71,17 @@ const config = {
         gradient:
           "linear-gradient(to right, var(--gradient-start), var(--gradient-middle), var(--gradient-end))",
       },
+      extend: {
+        keyframes: {
+          twinkle: {
+            "0%, 100%": { opacity: 0.2 },
+            "50%": { opacity: 0.7 },
+          },
+        },
+        animation: {
+          twinkle: "twinkle 2s infinite",
+        },
+      },
     },
   },
   plugins: [addVariablesForColors],

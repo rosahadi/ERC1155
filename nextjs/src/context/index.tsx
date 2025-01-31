@@ -17,15 +17,15 @@ import {
   WagmiProvider,
   type Config,
 } from "wagmi";
-import { FloatingNav } from "@/components/ui/floating-navbar";
+import { FloatingNav } from "@/components/floating-navbar";
 
 // Set up queryClient
 const queryClient = new QueryClient();
 
 // Set up metadata
 const metadata = {
-  name: "next-reown-appkit",
-  description: "next-reown-appkit",
+  name: "Cool Cats",
+  description: "Cool Cats",
   url: "https://rosah.dev",
   icons: [
     "https://avatars.githubusercontent.com/u/179229932",

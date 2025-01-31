@@ -67,17 +67,19 @@ export const FloatingNav = ({
           duration: 0.2,
         }}
         className={cn(
-          "flex fixed top-0 inset-x-0 max-w-[120rem] w-[90%] mx-auto h-[8.62rem] max-[730px]:h-[8rem] max-[600px]:h-[7.5rem] bg-[#081425] z-[5000] items-center justify-between px-8",
+          "flex fixed top-0 inset-x-0  h-[8.62rem] max-[730px]:h-[8rem] max-[600px]:h-[7.5rem] bg-[#081425] z-[40] items-center",
           className
         )}
       >
-        <div className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#ffd700] to-[#00ffff] font-bold text-4xl">
-          Cool Cat NFTs
-        </div>
+        <div className="max-w-[120rem] w-[90%] mx-auto flex items-center justify-between">
+          <div className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#ffd700] to-[#00ffff] font-bold text-4xl">
+            Cool Cat NFTs
+          </div>
 
-        <ConnectBtn onClick={onClick}>
-          connect wallet
-        </ConnectBtn>
+          <ConnectBtn onClick={onClick}>
+            connect wallet
+          </ConnectBtn>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

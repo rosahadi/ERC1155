@@ -13,9 +13,9 @@ async function main() {
   );
 
   const tokenCollectionAddress =
-    "0x16C1Cf99075f38E454E8Ed839fbD7F1fAc053B13";
+    "0x8B8BA7B3E324bE280096583B99eef49117E7F872";
   const tokenForgeAddress =
-    "0x6d54d3210690f2F7Adb895432c67a31CB1e50d32";
+    "0xc8b7FB2894f16219cE038f5a1016A93BBa5e1dfF";
 
   const tokenCollection = new ethers.Contract(
     tokenCollectionAddress,

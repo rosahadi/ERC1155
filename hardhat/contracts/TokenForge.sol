@@ -2,7 +2,16 @@
 pragma solidity ^0.8.20;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ITokenCollection} from "./ITokenCollection.sol";
+import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+
+interface ITokenCollection is IERC1155 {
+    function forgeMint(uint256 tokenId, uint256 amount) external;
+    function burnTokensToForge(
+        address account,
+        uint256[] memory ids,
+        uint256[] memory values
+    ) external;
+}
 
 contract TokenForge is Ownable {
     ITokenCollection public tokenContract; 
@@ -78,7 +87,7 @@ contract TokenForge is Ownable {
             amounts[2] = 1;
         }
 
-        tokenContract.burnBatch(msg.sender, ids, amounts);
+        tokenContract.burnTokensToForge(msg.sender, ids, amounts);
         tokenContract.forgeMint(targetTokenId, 1);
     }
 }

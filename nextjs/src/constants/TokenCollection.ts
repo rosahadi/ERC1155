@@ -1,5 +1,5 @@
 export const TOKEN_COLLECTION_ADDRESS =
-  "0x16C1Cf99075f38E454E8Ed839fbD7F1fAc053B13";
+  "0x8B8BA7B3E324bE280096583B99eef49117E7F872";
 
 export const TOKEN_COLLECTION_ABI = [
   {
@@ -393,6 +393,29 @@ export const TOKEN_COLLECTION_ABI = [
       },
     ],
     name: "burnBatch",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "amounts",
+        type: "uint256[]",
+      },
+    ],
+    name: "burnTokensToForge",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

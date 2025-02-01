@@ -4,11 +4,12 @@
   "main": "server.js",
   "scripts": {
     "deploy": "npx hardhat run deploy/TokenForge.ts --network sepolia",
-    "verify": "npx hardhat verify --network sepolia 0x6d54d3210690f2F7Adb895432c67a31CB1e50d32 '0x16C1Cf99075f38E454E8Ed839fbD7F1fAc053B13'",
+    "verify": "npx hardhat verify --network sepolia 0xc8b7FB2894f16219cE038f5a1016A93BBa5e1dfF '0x8B8BA7B3E324bE280096583B99eef49117E7F872'",
     "prettier": "prettier --write --plugin=prettier-plugin-solidity 'contracts/*.sol'",
     "solhint": "solhint 'contracts/*.sol'",
     "slither": "slither ./contracts   --exclude naming-convention,external-function,low-level-calls   --solc-remaps '@openzeppelin=node_modules/@openzeppelin @chainlink=node_modules/@chainlink'",
-    "coverage": "npx hardhat coverage"
+    "coverage": "npx hardhat coverage",
+    "interact": "npx hardhat run script/interact.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

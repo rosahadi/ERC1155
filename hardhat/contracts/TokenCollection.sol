@@ -72,11 +72,6 @@ contract TokenCollection is
         _mint(msg.sender, tokenId, 1, "");
     }
 
-    function forgeMint(uint256 tokenId, uint256 amount) external {
-        if (msg.sender != forgeContract) revert UnauthorizedForge();
-        _mint(tx.origin, tokenId, amount, "");
-    }
-
     function trade(
         uint256 tokenToGive,
         uint256 tokenToReceive,
@@ -94,6 +89,21 @@ contract TokenCollection is
     function setForgeContract(address _forgeContract) external onlyOwner {
         if (_forgeContract == address(0)) revert InvalidAddress();
         forgeContract = _forgeContract;
+    }
+
+
+    function forgeMint(uint256 tokenId, uint256 amount) external {
+        if (msg.sender != forgeContract) revert UnauthorizedForge();
+        _mint(tx.origin, tokenId, amount, "");
+    }
+
+    function burnTokensToForge(
+    address account,
+    uint256[] memory ids,
+    uint256[] memory amounts
+    ) external {
+        if (msg.sender != forgeContract) revert UnauthorizedForge();
+        _burnBatch(account, ids, amounts);
     }
 
     // Required override by Solidity to handle ERC1155Supply

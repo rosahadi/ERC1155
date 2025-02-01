@@ -31,11 +31,7 @@ const NFTActions: React.FC<{
       {tokenId >= 3 && (
         <div className="flex gap-4 items-center">
           <div className="flex-1">
-            <ForgeButton
-              onForge={() => console.log("forge")}
-              isPending={false}
-              balance={balance}
-            />
+            <ForgeButton tokenId={tokenId} />
           </div>
           {balance > 0 && (
             <div className="flex-1">

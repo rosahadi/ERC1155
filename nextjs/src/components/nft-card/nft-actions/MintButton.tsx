@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import useMint from "@/hooks/useMint";
 import { useMintStore } from "@/store/useMintStore";
+import useBalance from "@/hooks/useBalance";
 
 const MintButton: React.FC<{ tokenId: number }> = ({
   tokenId,
@@ -10,8 +11,12 @@ const MintButton: React.FC<{ tokenId: number }> = ({
     mint,
     isMintPending,
     isMintLoading,
+    isMintSuccess,
     activeTokenId,
   } = useMint();
+
+  const { refetchBalance } = useBalance();
+
   const currentCooldown = useMintStore((state) =>
     state.getRemainingCooldown()
   );
@@ -23,6 +28,12 @@ const MintButton: React.FC<{ tokenId: number }> = ({
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (isMintSuccess) {
+      refetchBalance();
+    }
+  }, [isMintSuccess, refetchBalance]);
 
   const isDisabled =
     isMintPending || isMintLoading || currentCooldown > 0;

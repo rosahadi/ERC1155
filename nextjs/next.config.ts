@@ -7,8 +7,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "ipfs.io",
       },
+      {
+        protocol: "https",
+        hostname: "**.ipfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "**.ipfs.dweb.link",
+      },
     ],
   },
 };
-
 export default nextConfig;

@@ -11,7 +11,7 @@ const NFTImage: React.FC<{
         <Image
           src={imageUrl}
           alt={metadata.name || "NFT Image"}
-          layout="fill"
+          fill
           objectFit="cover"
           unoptimized={true}
         />

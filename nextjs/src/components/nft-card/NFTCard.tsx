@@ -39,26 +39,31 @@ const NFTCard: React.FC<TokenCardProps> = ({ tokenId }) => {
     const fetchMetadata = async () => {
       try {
         const fullUrl = `${IPFS_BASE_URL}${tokenId}.json`;
-        const response = await fetch(
-          fullUrl.replace(
-            "ipfs://",
-            "https://ipfs.io/ipfs/"
-          )
+        const resolvedUrl = fullUrl.replace(
+          "ipfs://",
+          "https://dweb.link/ipfs/"
         );
+
+        const response = await fetch(resolvedUrl);
         if (!response.ok) {
           throw new Error(
             `HTTP error! status: ${response.status}`
           );
         }
+
         const data = await response.json();
         setMetadata(data);
         if (data.image) {
           const resolvedImageUrl = data.image
-            .replace("ipfs://", "https://ipfs.io/ipfs/")
+            .replace("ipfs://", "https://dweb.link/ipfs/")
             .replace(
               "ipfs://ipfs/",
-              "https://ipfs.io/ipfs/"
+              "https://dweb.link/ipfs/"
             );
+          console.log(
+            "Resolved image URL:",
+            resolvedImageUrl
+          );
           setImageUrl(resolvedImageUrl);
         }
       } catch (error) {
@@ -66,14 +71,8 @@ const NFTCard: React.FC<TokenCardProps> = ({ tokenId }) => {
           `Error fetching metadata for token ${tokenId}:`,
           error
         );
-        // setMetadataError(
-        //   error instanceof Error
-        //     ? error.message
-        //     : String(error)
-        // );
       }
     };
-
     fetchMetadata();
   }, [tokenId]);
 

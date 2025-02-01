@@ -2,7 +2,8 @@ import {
   TOKEN_COLLECTION_ABI,
   TOKEN_COLLECTION_ADDRESS,
 } from "@/constants/TokenCollection";
-import { useEffect, useState } from "react";
+import { useMintStore } from "@/store/useMintStore";
+import { useEffect } from "react";
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -10,23 +11,23 @@ import {
 } from "wagmi";
 
 function useMint() {
-  const [cooldownTimestamps, setCooldownTimestamps] =
-    useState<number>(() =>
-      parseInt(
-        sessionStorage.getItem("mintCooldown") ?? "0",
-        10
-      )
-    );
-
-  const [pendingTokenId, setPendingTokenId] = useState<
-    number | null
-  >(null);
+  const {
+    isMintPending,
+    isMintLoading,
+    activeTokenId,
+    setCooldownTimestamp,
+    setMintPending,
+    setMintLoading,
+    setActiveTokenId,
+    getRemainingCooldown,
+  } = useMintStore();
 
   const {
     writeContract,
     isPending,
     data: hash,
     error: writeError,
+    reset: resetWrite,
   } = useWriteContract();
 
   const { data: COOLDOWN } = useReadContract({
@@ -39,27 +40,58 @@ function useMint() {
     useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
-    if (isSuccess && pendingTokenId !== null) {
+    setMintPending(isPending);
+    if (!isPending && !isLoading) setActiveTokenId(null);
+  }, [
+    isPending,
+    isLoading,
+    setMintPending,
+    setActiveTokenId,
+  ]);
+
+  useEffect(() => {
+    setMintLoading(isLoading);
+  }, [isLoading, setMintLoading]);
+
+  useEffect(() => {
+    if (writeError) {
+      setMintPending(false);
+      setMintLoading(false);
+      setActiveTokenId(null);
+      resetWrite?.();
+    }
+  }, [
+    writeError,
+    resetWrite,
+    setMintPending,
+    setMintLoading,
+    setActiveTokenId,
+  ]);
+
+  useEffect(() => {
+    if (isSuccess && activeTokenId !== null) {
       const newCooldownTimestamp =
         Date.now() + (Number(COOLDOWN) ?? 0) * 1000;
-      setCooldownTimestamps(newCooldownTimestamp);
-      sessionStorage.setItem(
-        "mintCooldown",
-        newCooldownTimestamp.toString()
-      );
-      setPendingTokenId(null);
+      setCooldownTimestamp(newCooldownTimestamp);
+      setActiveTokenId(null);
     }
-  }, [isSuccess, pendingTokenId, COOLDOWN]);
-
-  const getRemainingCooldown = () =>
-    Math.max(
-      0,
-      Math.ceil((cooldownTimestamps - Date.now()) / 1000)
-    );
+  }, [
+    isSuccess,
+    activeTokenId,
+    COOLDOWN,
+    setCooldownTimestamp,
+    setActiveTokenId,
+  ]);
 
   const mint = (id: number) => {
-    if (getRemainingCooldown() > 0) return;
-    setPendingTokenId(id);
+    if (
+      getRemainingCooldown() > 0 ||
+      isMintPending ||
+      isMintLoading
+    )
+      return;
+
+    setActiveTokenId(id);
     writeContract({
       address: TOKEN_COLLECTION_ADDRESS,
       abi: TOKEN_COLLECTION_ABI,
@@ -70,11 +102,12 @@ function useMint() {
 
   return {
     mint,
-    isMintPending: pendingTokenId !== null && isPending,
+    isMintPending,
     isMintSuccess: isSuccess,
-    isMintLoading: isLoading,
+    isMintLoading,
     mintError: writeError,
     getRemainingCooldown,
+    activeTokenId,
   };
 }
 

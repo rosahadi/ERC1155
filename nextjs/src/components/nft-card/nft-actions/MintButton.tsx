@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import useMint from "@/hooks/useMint";
+import { useMintStore } from "@/store/useMintStore";
 
 const MintButton: React.FC<{ tokenId: number }> = ({
   tokenId,
@@ -9,32 +10,28 @@ const MintButton: React.FC<{ tokenId: number }> = ({
     mint,
     isMintPending,
     isMintLoading,
-    getRemainingCooldown,
+    activeTokenId,
   } = useMint();
-
-  const remainingCooldown = getRemainingCooldown();
-  const [currentCooldown, setCurrentCooldown] = useState(
-    remainingCooldown
+  const currentCooldown = useMintStore((state) =>
+    state.getRemainingCooldown()
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      useMintStore.setState({});
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const isDisabled =
     isMintPending || isMintLoading || currentCooldown > 0;
-
-  useEffect(() => {
-    setCurrentCooldown(remainingCooldown);
-    if (remainingCooldown > 0) {
-      const interval = setInterval(() => {
-        setCurrentCooldown((prev) => Math.max(0, prev - 1));
-        if (currentCooldown === 0) clearInterval(interval);
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [remainingCooldown, currentCooldown]);
+  const isActiveToken = activeTokenId === tokenId;
 
   const getCooldownText = () => {
-    if (remainingCooldown <= 0) return null;
-    const minutes = Math.floor(remainingCooldown / 60);
-    const seconds = remainingCooldown % 60;
+    if (currentCooldown <= 0) return null;
+    const minutes = Math.floor(currentCooldown / 60);
+    const seconds = currentCooldown % 60;
     return `${minutes}:${seconds
       .toString()
       .padStart(2, "0")}`;
@@ -44,13 +41,13 @@ const MintButton: React.FC<{ tokenId: number }> = ({
     <button
       onClick={() => mint(tokenId)}
       disabled={isDisabled}
-      className={`
-        action-button bg-gradient-to-r from-pink-500 to-purple-500
-      `}
+      className={`action-button bg-gradient-to-r from-pink-500 to-purple-500 ${
+        isDisabled && !isActiveToken ? "opacity-50" : ""
+      }`}
     >
-      {isMintPending || isMintLoading ? (
+      {(isMintPending || isMintLoading) && isActiveToken ? (
         <Loader2 className="loader-icon" />
-      ) : remainingCooldown > 0 ? (
+      ) : currentCooldown > 0 ? (
         `Cooldown ${getCooldownText()}`
       ) : (
         "Mint"

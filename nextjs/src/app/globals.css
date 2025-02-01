@@ -121,7 +121,20 @@
 }
 
 @layer components {
+  .loader-icon {
+    @apply w-6 h-6 animate-spin mx-auto;
+  }
+
+  .modal-input {
+    @apply w-full px-3 py-2 bg-card-highlight rounded border border-solid border-card-neon text-white;
+  }
+}
+
+@layer utilities {
   .action-button {
-    @apply py-2 w-full text-white rounded-lg text-[1.6rem] font-medium hover:scale-105 transition-all duration-300 flex items-center justify-center;
+    @apply h-[3.7rem] w-full text-white rounded-lg text-[1.6rem] 
+      font-medium hover:scale-105 transition-all duration-300 
+      flex items-center justify-center
+    disabled:cursor-not-allowed;
   }
 }

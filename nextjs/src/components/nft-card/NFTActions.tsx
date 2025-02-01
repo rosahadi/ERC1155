@@ -1,3 +1,4 @@
+import React from "react";
 import BurnButton from "./nft-actions/BurnButton";
 import ForgeButton from "./nft-actions/ForgeButton";
 import MintButton from "./nft-actions/MintButton";
@@ -9,14 +10,10 @@ const NFTActions: React.FC<{
 }> = ({ tokenId, balance }) => {
   return (
     <div>
-      {/* Mint & Trade Logic */}
       {tokenId <= 2 && (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center h-full">
           <div className="flex-1">
-            <MintButton
-              onMint={() => console.log("mint")}
-              isPending={false}
-            />
+            <MintButton tokenId={tokenId} />
           </div>
           {balance > 0 && (
             <div className="flex-1">
@@ -31,7 +28,6 @@ const NFTActions: React.FC<{
         </div>
       )}
 
-      {/* Forge & Burn Logic */}
       {tokenId >= 3 && (
         <div className="flex gap-4 items-center">
           <div className="flex-1">

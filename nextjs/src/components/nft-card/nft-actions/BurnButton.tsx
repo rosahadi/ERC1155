@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Modal from "./Modal";
 import useBurn from "@/hooks/useBurn";
+import useBalance from "@/hooks/useBalance";
 
 const BurnButton: React.FC<{
   balance: number;
@@ -15,6 +16,14 @@ const BurnButton: React.FC<{
     isBurnSuccess,
     isBurnLoading,
   } = useBurn();
+
+  const { refetchBalance } = useBalance();
+
+  useEffect(() => {
+    if (isBurnSuccess) {
+      refetchBalance();
+    }
+  }, [isBurnSuccess, refetchBalance]);
 
   const handleBurn = () => {
     burn(tokenId, burnAmount);
@@ -62,9 +71,6 @@ const BurnButton: React.FC<{
           className="w-full px-3 py-2 bg-card-highlight rounded border border-solid border-card-neon text-white"
         />
       </Modal>
-      {isBurnSuccess && (
-        <p className="text-green-500">Burn successful!</p>
-      )}
     </>
   );
 };

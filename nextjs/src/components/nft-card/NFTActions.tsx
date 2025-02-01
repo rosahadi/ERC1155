@@ -19,8 +19,6 @@ const NFTActions: React.FC<{
             <div className="flex-1">
               <TradeButton
                 tokenId={tokenId}
-                onTrade={() => console.log("trade")}
-                isPending={false}
                 balance={balance}
               />
             </div>
@@ -36,8 +34,7 @@ const NFTActions: React.FC<{
           {balance > 0 && (
             <div className="flex-1">
               <BurnButton
-                onBurn={() => console.log("burn")}
-                isPending={false}
+                tokenId={tokenId}
                 balance={balance}
               />
             </div>

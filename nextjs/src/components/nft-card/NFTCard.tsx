@@ -20,15 +20,11 @@ const NFTCard: React.FC<TokenCardProps> = ({ tokenId }) => {
   }>({});
   const [imageUrl, setImageUrl] = useState<string>("");
   const [balance, setBalance] = useState<number>(0);
-  const [metadataError, setMetadataError] = useState<
-    string | null
-  >(null);
+  // const [metadataError, setMetadataError] = useState<
+  //   string | null
+  // >(null);
 
-  const {
-    tokenBalances,
-    isBalanceLoading,
-    refetchBalance,
-  } = useBalance();
+  const { tokenBalances } = useBalance();
 
   useEffect(() => {
     if (
@@ -70,12 +66,11 @@ const NFTCard: React.FC<TokenCardProps> = ({ tokenId }) => {
           `Error fetching metadata for token ${tokenId}:`,
           error
         );
-        setMetadataError(
-          error instanceof Error
-            ? error.message
-            : String(error)
-        );
-      } finally {
+        // setMetadataError(
+        //   error instanceof Error
+        //     ? error.message
+        //     : String(error)
+        // );
       }
     };
 

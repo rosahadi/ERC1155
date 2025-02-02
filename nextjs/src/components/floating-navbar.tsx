@@ -76,9 +76,20 @@ export const FloatingNav = ({
             CoolCats
           </div>
 
-          <ConnectBtn onClick={onClick}>
-            connect wallet
-          </ConnectBtn>
+          <div className="flex items-center gap-16">
+            <a
+              href="https://testnets.opensea.io/collection/coolcats-7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-secondary"
+            >
+              View on OpenSea
+            </a>
+
+            <ConnectBtn onClick={onClick}>
+              connect wallet
+            </ConnectBtn>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>
